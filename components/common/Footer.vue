@@ -32,6 +32,7 @@ import IconGithub from '~/components/icons/github.vue'
 import ColorMode from '~/components/ColorMode.vue'
 
 export default Vue.extend({
+  name: 'Footer' as string,
   components: {
     ColorMode,
     IconHeart,

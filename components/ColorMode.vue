@@ -20,6 +20,7 @@ import IconSun from '~/components/icons/Sun.vue'
 import IconMoon from '~/components/icons/Moon.vue'
 
 export default Vue.extend({
+  name: 'ColorMode',
   components: {
     IconSun,
     IconMoon,

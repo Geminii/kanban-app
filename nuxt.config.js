@@ -24,8 +24,6 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    // https://github.com/nuxt-community/svg-module#readme
-    '@nuxtjs/svg',
     // https://color-mode.nuxtjs.org/
     '@nuxtjs/color-mode',
   ],

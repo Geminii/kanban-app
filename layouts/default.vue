@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <main class="lg:block relative pt-16 lg:pt-24">
+    <main class="lg:block relative py-16 lg:pt-24 overflow-auto h-auto">
       <Nuxt />
     </main>
     <Footer />
@@ -20,3 +20,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style scoped>
+main {
+  min-height: calc(100vh - 137px);
+}
+</style>

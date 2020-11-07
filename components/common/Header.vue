@@ -24,6 +24,7 @@ import Vue from 'vue'
 import IconBrand from '~/components/icons/brand.vue'
 
 export default Vue.extend({
+  name: 'Header' as string,
   components: {
     IconBrand,
   },
