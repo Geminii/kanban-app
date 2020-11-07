@@ -4,7 +4,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'Nuxt Kanban App',
+    title: 'Kanban App',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -24,7 +24,15 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    // https://github.com/nuxt-community/svg-module#readme
+    '@nuxtjs/svg',
+    // https://color-mode.nuxtjs.org/
+    '@nuxtjs/color-mode',
   ],
+
+  colorMode: {
+    preference: 'light',
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
