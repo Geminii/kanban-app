@@ -2,9 +2,11 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import vClickOutside from 'v-click-outside'
+import Verte from 'verte'
 import MatterCard from '~/components/card/MatterCard.vue'
 import defaultStages from '~/data/default-stages'
 Vue.use(vClickOutside)
+Vue.use(Verte)
 
 const parentStageIndex = 0
 const matter = defaultStages.stages[parentStageIndex].cards[0]
@@ -61,7 +63,7 @@ describe('MatterCard', () => {
     )
   })
 
-  test('event done emitted if invalid form', async () => {
+  test('impossible to create card if invalid form', async () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
         parentStageIndex,
@@ -75,8 +77,7 @@ describe('MatterCard', () => {
     wrapper.find('[data-test=matter-input-title]').trigger('keyup.enter')
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.emitted('editDone')).toHaveLength(1)
-    expect(wrapper.emitted('editDone')[0]).toEqual([false])
+    expect(wrapper.emitted('editDone')).toBeFalsy()
   })
 
   test('create a card if valid form', async () => {
@@ -95,5 +96,33 @@ describe('MatterCard', () => {
 
     expect(wrapper.emitted('editDone')).toHaveLength(1)
     expect(wrapper.emitted('editDone')[0]).toEqual([false])
+  })
+
+  test('focus field title if color has been chosen before to write a title', () => {
+    const wrapper = shallowMount(MatterCard, {
+      propsData: {
+        parentStageIndex,
+        edit: true,
+      },
+      localVue,
+      store,
+    })
+
+    // Simulate an outside click to focus title field
+    wrapper.vm.focusFieldIfEmptyTitle()
+  })
+
+  test("don't focus field not empty title if color has been chosen", () => {
+    const wrapper = shallowMount(MatterCard, {
+      propsData: {
+        parentStageIndex,
+        edit: true,
+      },
+      localVue,
+      store,
+    })
+    wrapper.vm.matter.title = 'A simple matter'
+    // Simulate an outside click without focus title field
+    wrapper.vm.focusFieldIfEmptyTitle()
   })
 })
