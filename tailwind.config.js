@@ -36,9 +36,9 @@ module.exports = {
         },
         dark: {
           surface: '#2C3E50',
-          onSurfacePrimary: '#F5F7FA',
+          onSurfacePrimary: '#e2e8f0',
           onSurfaceSecondary: '#B8C2CC',
-          elevatedSurface: '#2F495E',
+          elevatedSurface: '#1a202c',
           border: defaultTheme.colors.gray['600'],
         },
       },

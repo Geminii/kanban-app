@@ -13,9 +13,10 @@
       class="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3"
     >
       <stage-card
-        v-for="(stage, stageIndex) of kanban.stages"
-        :key="stageIndex"
+        v-for="(stage, indexStage) of kanban.stages"
+        :key="stage.id"
         :stage="stage"
+        :stage-index="indexStage"
       />
     </div>
   </div>

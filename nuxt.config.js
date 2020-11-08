@@ -28,6 +28,8 @@ export default {
     '@nuxtjs/color-mode',
   ],
 
+  plugins: [{ mode: 'client', src: '~/plugins/click-outside' }],
+
   colorMode: {
     preference: 'light',
   },

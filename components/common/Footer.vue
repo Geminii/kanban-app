@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="fixed bottom-0 left-0 right-0 z-30 bg-light-elevatedSurface dark:bg-dark-elevatedSurface border-t border-light-border dark:border-dark-border px-8 py-2"
+    class="fixed bottom-0 left-0 right-0 z-30 bg-light-elevatedSurface dark:bg-dark-elevatedSurface border-t border-light-border dark:border-dark-border px-4 sm:px-8 py-2"
   >
     <div class="flex justify-between items-center">
       <p class="flex align-middle font-semibold text-kanban-lightgreen">
