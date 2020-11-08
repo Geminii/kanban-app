@@ -8,8 +8,8 @@ import defaultStages from '~/data/default-stages'
 Vue.use(vClickOutside)
 Vue.use(Verte)
 
-const parentStageIndex = 0
-const matter = defaultStages.stages[parentStageIndex].cards[0]
+const stageIndex = 0
+const matter = defaultStages.stages[stageIndex].cards[0]
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -26,7 +26,7 @@ describe('MatterCard', () => {
   test('is a Vue instance', () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         matter,
       },
       localVue,
@@ -38,7 +38,7 @@ describe('MatterCard', () => {
   test('has a title', () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         matter,
       },
       localVue,
@@ -52,7 +52,7 @@ describe('MatterCard', () => {
   test('has a reference', () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         matter,
       },
       localVue,
@@ -66,7 +66,7 @@ describe('MatterCard', () => {
   test('impossible to create card if invalid form', async () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         edit: true,
       },
       localVue,
@@ -83,7 +83,7 @@ describe('MatterCard', () => {
   test('create a card if valid form', async () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         edit: true,
       },
       localVue,
@@ -101,7 +101,7 @@ describe('MatterCard', () => {
   test('focus field title if color has been chosen before to write a title', () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         edit: true,
       },
       localVue,
@@ -115,7 +115,7 @@ describe('MatterCard', () => {
   test("don't focus field not empty title if color has been chosen", () => {
     const wrapper = shallowMount(MatterCard, {
       propsData: {
-        parentStageIndex,
+        stageIndex,
         edit: true,
       },
       localVue,
