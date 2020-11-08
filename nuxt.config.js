@@ -31,6 +31,7 @@ export default {
   plugins: [
     { mode: 'client', src: '~/plugins/click-outside' },
     { mode: 'client', src: '~/plugins/verte' },
+    { mode: 'client', src: '~/plugins/draggable' },
   ],
 
   colorMode: {

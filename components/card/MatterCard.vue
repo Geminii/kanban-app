@@ -1,7 +1,7 @@
 <template>
   <div
-    class="border rounded border-t-4 relative pl-2 py-4 mb-4"
-    :class="edit ? 'pr-2' : 'pr-8'"
+    class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white"
+    :class="edit ? 'pr-2' : 'cursor-move pr-8'"
     :style="`border-color: ${matter.color}`"
   >
     <template v-if="edit">
@@ -27,7 +27,7 @@
         <button
           type="button"
           data-test="stage-add-matter"
-          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md light:text-gray-700 dark:text-dark-onSurfacePrimary light:hover:text-orange-500 dark:hover:text-orange-500 hover:border-orange-500 focus:outline-none focus:border-text-orange-500"
+          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-orange-500 dark:hover:text-orange-500 hover:border-orange-500 focus:outline-none focus:border-text-orange-500"
           @click="emitDone"
         >
           <icon-cancel class="h-5 w-5" />
@@ -36,7 +36,7 @@
         <button
           type="button"
           data-test="stage-add-matter"
-          class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md light:text-gray-700 dark:text-dark-onSurfacePrimary light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-light-blue-300"
+          class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-light-blue-300"
           @click="saveCard"
         >
           <icon-save class="h-5 w-5" />
@@ -47,13 +47,13 @@
     <template v-else>
       <h2
         data-test="matter-title"
-        class="text-medium leading-5 font-medium text-indigo-600"
+        class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
       >
         {{ matter.title }}
       </h2>
       <span
         data-test="matter-reference"
-        class="absolute text-sm leading-5 text-gray-500 top-0 right-6"
+        class="absolute text-sm text-gray-600 top-0 right-6"
       >
         #{{ matter.reference }}
       </span>
@@ -76,7 +76,7 @@ export default Vue.extend({
     IconSave,
   },
   props: {
-    parentStageIndex: {
+    stageIndex: {
       type: Number,
       required: true,
     },
@@ -109,7 +109,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions({
-      createMatterCard: 'kanban/createTask',
+      createMatterCard: 'kanban/createMatter',
     }),
     focusTitleField() {
       const title: any = this.$refs.title
@@ -118,7 +118,7 @@ export default Vue.extend({
     saveCard(): void {
       if (this.edit && this.isValidFormCard) {
         this.createMatterCard({
-          parentStageIndex: this.parentStageIndex,
+          stageIndex: this.stageIndex,
           matter: this.matter,
         })
         this.emitDone()

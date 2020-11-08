@@ -3,7 +3,7 @@
     <div
       class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-6"
     >
-      <p class="font-extrabold text-xl text-indigo-600 underline mb-4 sm:mb-0">
+      <p class="font-extrabold text-xl text-purple-700 mb-4 sm:mb-0">
         Matters Pipeline
       </p>
 
@@ -17,6 +17,7 @@
         :key="stage.id"
         :stage="stage"
         :stage-index="indexStage"
+        :kanban="kanban"
       />
     </div>
   </div>

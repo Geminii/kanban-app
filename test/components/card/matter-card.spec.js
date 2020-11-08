@@ -15,7 +15,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 const actions = {
-  'kanban/createTask': jest.fn(),
+  'kanban/createMatter': jest.fn(),
 }
 
 const store = new Vuex.Store({

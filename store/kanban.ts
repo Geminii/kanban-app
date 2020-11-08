@@ -16,22 +16,25 @@ export const getters: GetterTree<RootState, RootState> = {
 }
 
 export const mutations: MutationTree<RootState> = {
-  CREATE_TASK: (state, { parentStageIndex, matter }) => {
-    state.stages[parentStageIndex].cards.push(matter)
+  CREATE_MATTER: (state, { stageIndex, matter }) => {
+    state.stages[stageIndex].cards.push(matter)
+  },
+  UPDATE_MATTER: (state, { stageIndex, matters }) => {
+    state.stages[stageIndex].cards = matters
   },
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  createTask({ commit, getters }, { parentStageIndex, matter }) {
-    // await back-end response to create task
-    console.info('BACK-END response to create task')
-    commit('CREATE_TASK', {
-      parentStageIndex,
+  createMatter({ commit, getters }, { stageIndex, matter }) {
+    // await back-end response to create matter
+    console.info('BACK-END response to create matter')
+    commit('CREATE_MATTER', {
+      stageIndex,
       matter: {
         id: uuidv4(),
         title: matter.title,
         reference: getters.countTotalCards + 1,
-        order: getters.getLastOrderMatter(parentStageIndex),
+        order: getters.getLastOrderMatter(stageIndex),
         color: matter.color,
       },
     })
