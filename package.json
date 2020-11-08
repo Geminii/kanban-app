@@ -13,13 +13,19 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn test:unit"
     }
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.5"
+    "nuxt": "^2.14.5",
+    "uuid": "^8.3.1",
+    "v-click-outside": "^3.1.2",
+    "verte": "^0.0.12",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -31,6 +37,7 @@
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/tailwindcss": "^3.2.0",
+    "@types/uuid": "^8.3.0",
     "@vue/test-utils": "^1.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",

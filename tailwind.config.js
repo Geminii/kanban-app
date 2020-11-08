@@ -10,6 +10,10 @@ module.exports = {
     purgeLayersByDefault: true,
   },
   theme: {
+    inset: {
+      0: 0,
+      6: '6px',
+    },
     extend: {
       fontFamily: {
         sans: [
@@ -32,21 +36,21 @@ module.exports = {
         },
         dark: {
           surface: '#2C3E50',
-          onSurfacePrimary: '#F5F7FA',
+          onSurfacePrimary: '#e2e8f0',
           onSurfaceSecondary: '#B8C2CC',
-          elevatedSurface: '#2F495E',
+          elevatedSurface: '#1a202c',
           border: defaultTheme.colors.gray['600'],
         },
       },
       fill: (theme) => ({
-        'kanban-gray': theme('colors.nuxt.gray'),
-        'kanban-lightgreen': theme('colors.nuxt.lightgreen'),
-        'kanban-green': theme('colors.nuxt.green'),
+        'kanban-gray': theme('colors.kanban.gray'),
+        'kanban-lightgreen': theme('colors.kanban.lightgreen'),
+        'kanban-green': theme('colors.kanban.green'),
       }),
       stroke: (theme) => ({
-        'kanban-gray': theme('colors.nuxt.gray'),
-        'kanban-lightgreen': theme('colors.nuxt.lightgreen'),
-        'kanban-green': theme('colors.nuxt.green'),
+        'kanban-gray': theme('colors.kanban.gray'),
+        'kanban-lightgreen': theme('colors.kanban.lightgreen'),
+        'kanban-green': theme('colors.kanban.green'),
       }),
     },
   },

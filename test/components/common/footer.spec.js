@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Footer from '~/components/common/Footer.vue'
 
 const colorMode = {
@@ -10,7 +10,7 @@ describe('Footer', () => {
     const wrapper = shallowMount(Footer, {
       mocks: {
         $colorMode: colorMode,
-      }
+      },
     })
     expect(wrapper.vm).toBeTruthy()
   })

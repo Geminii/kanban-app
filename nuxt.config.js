@@ -24,10 +24,14 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    // https://github.com/nuxt-community/svg-module#readme
-    '@nuxtjs/svg',
     // https://color-mode.nuxtjs.org/
     '@nuxtjs/color-mode',
+  ],
+
+  plugins: [
+    { mode: 'client', src: '~/plugins/click-outside' },
+    { mode: 'client', src: '~/plugins/verte' },
+    { mode: 'client', src: '~/plugins/draggable' },
   ],
 
   colorMode: {
