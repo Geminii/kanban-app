@@ -10,7 +10,7 @@ describe('Footer', () => {
     const wrapper = shallowMount(Footer, {
       mocks: {
         $colorMode: colorMode,
-      }
+      },
     })
     expect(wrapper.vm).toBeTruthy()
   })

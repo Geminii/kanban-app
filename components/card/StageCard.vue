@@ -94,6 +94,6 @@ export default Vue.extend({
 
 <style scoped>
 .ghost-card {
-  @apply opacity-25 bg-gray-300
+  @apply opacity-25 bg-gray-300;
 }
 </style>
