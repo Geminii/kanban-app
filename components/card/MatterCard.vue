@@ -1,8 +1,9 @@
 <template>
   <div
+    data-test="matter-card"
     class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white"
     :class="edit ? 'pr-2' : 'cursor-move pr-8'"
-    :style="`border-color: ${matter.color}`"
+    :style="borderColor"
   >
     <template v-if="edit">
       <div class="flex justify-between items-center">
@@ -52,6 +53,7 @@
         {{ matter.title }}
       </h2>
       <span
+        v-show="displayOptions.displayReferences"
         data-test="matter-reference"
         class="absolute text-sm text-gray-600 top-0 right-6"
       >
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { MatterCard } from '~/types/matter-card'
 import IconCancel from '~/components/icons/Cancel.vue'
 import IconSave from '~/components/icons/Save.vue'
@@ -98,11 +100,19 @@ export default Vue.extend({
     },
   },
   computed: {
+    ...mapGetters({
+      displayOptions: 'kanban/displayOptions',
+    }),
     isValidFormCard(): Boolean {
       return this.matter.title !== ''
     },
+    borderColor(): string {
+      return this.displayOptions.displayColors
+        ? `border-color: ${this.matter.color}`
+        : ''
+    },
   },
-  mounted() {
+  mounted(): void {
     if (this.edit) {
       this.focusTitleField()
     }
@@ -111,7 +121,7 @@ export default Vue.extend({
     ...mapActions({
       createMatterCard: 'kanban/createMatter',
     }),
-    focusTitleField() {
+    focusTitleField(): void {
       const title: any = this.$refs.title
       title.focus()
     },

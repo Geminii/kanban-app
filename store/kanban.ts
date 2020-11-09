@@ -4,6 +4,10 @@ import defaultStages from '~/data/default-stages'
 
 export const state = () => ({
   stages: defaultStages.stages,
+  displayOptions: {
+    displayColors: true,
+    displayReferences: true,
+  },
 })
 
 export type RootState = ReturnType<typeof state>
@@ -13,6 +17,7 @@ export const getters: GetterTree<RootState, RootState> = {
     state.stages.map((s) => s.cards.length).reduce((r, n) => r + n),
   getLastOrderMatter: (state) => (parentStageIndex: number) =>
     state.stages[parentStageIndex].cards.map((c) => c.order).length,
+  displayOptions: (state) => state.displayOptions,
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -21,6 +26,9 @@ export const mutations: MutationTree<RootState> = {
   },
   UPDATE_MATTER: (state, { stageIndex, matters }) => {
     state.stages[stageIndex].cards = matters
+  },
+  DISPLAY_OPTION: (state, { option, isVisible }) => {
+    state.displayOptions[option] = isVisible
   },
 }
 

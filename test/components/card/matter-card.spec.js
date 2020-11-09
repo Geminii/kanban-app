@@ -18,7 +18,17 @@ const actions = {
   'kanban/createMatter': jest.fn(),
 }
 
+const displayOptions = {
+  displayColors: true,
+  displayReferences: true,
+}
+
 const store = new Vuex.Store({
+  getters: {
+    'kanban/displayOptions'() {
+      return displayOptions
+    },
+  },
   actions,
 })
 
@@ -124,5 +134,21 @@ describe('MatterCard', () => {
     wrapper.vm.matter.title = 'A simple matter'
     // Simulate an outside click without focus title field
     wrapper.vm.focusFieldIfEmptyTitle()
+  })
+  test("don't apply border color style if display options colors to false", () => {
+    displayOptions.displayColors = false
+
+    const wrapper = shallowMount(MatterCard, {
+      propsData: {
+        stageIndex,
+        edit: true,
+      },
+      localVue,
+      store,
+    })
+
+    expect(
+      wrapper.find('[data-test=matter-card]').attributes('style')
+    ).toBeFalsy()
   })
 })
