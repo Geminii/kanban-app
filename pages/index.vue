@@ -7,7 +7,7 @@
         Matters Pipeline
       </p>
 
-      <!-- Display options -->
+      <options-dropdown />
     </div>
     <div
       class="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3"
@@ -17,7 +17,6 @@
         :key="stage.id"
         :stage="stage"
         :stage-index="indexStage"
-        :kanban="kanban"
       />
     </div>
   </div>
@@ -27,10 +26,12 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import StageCard from '~/components/card/StageCard.vue'
+import OptionsDropdown from '~/components/dropdown/OptionsDropdown.vue'
 
 export default Vue.extend({
   components: {
     StageCard,
+    OptionsDropdown,
   },
   computed: {
     ...mapState(['kanban']),

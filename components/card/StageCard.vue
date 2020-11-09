@@ -34,7 +34,7 @@
       <button
         type="button"
         data-test="stage-add-matter"
-        class="inline-flex items-center pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-light-blue-300"
+        class="inline-flex items-center pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-kanban-lightgreen"
         @click="addMatterCard = true"
       >
         <icon-add class="h-5 w-5" />
@@ -46,13 +46,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import MatterCard from '~/components/card/MatterCard.vue'
+import MatterCardComponent from '~/components/card/MatterCard.vue'
 import IconAdd from '~/components/icons/Add.vue'
+import { MatterCard } from '~/types/matter-card'
 
 export default Vue.extend({
   name: 'StageCard' as string,
   components: {
-    MatterCard,
+    MatterCard: MatterCardComponent,
     IconAdd,
   },
   props: {
@@ -72,10 +73,10 @@ export default Vue.extend({
   },
   computed: {
     matters: {
-      get() {
+      get(): Array<MatterCard> {
         return this.$store.state.kanban.stages[this.stageIndex].cards
       },
-      set(value) {
+      set(value: String) {
         this.$store.commit(
           'kanban/UPDATE_MATTER',
           { stageIndex: this.stageIndex, matters: value },

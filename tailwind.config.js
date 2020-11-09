@@ -91,6 +91,7 @@ module.exports = {
     ],
   },
   plugins: [
+    require('@tailwindcss/custom-forms'),
     plugin(function ({ addVariant, e }) {
       const colorModeVariants = ['light', 'dark']
       colorModeVariants.forEach((mode) => {
