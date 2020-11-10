@@ -5,6 +5,7 @@ import vClickOutside from 'v-click-outside'
 import Verte from 'verte'
 import MatterCard from '~/components/card/MatterCard.vue'
 import defaultStages from '~/data/default-stages'
+import { Action } from '~/types/action'
 Vue.use(vClickOutside)
 Vue.use(Verte)
 
@@ -14,141 +15,158 @@ const matter = defaultStages.stages[stageIndex].cards[0]
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-const actions = {
-  'kanban/createMatter': jest.fn(),
-}
-
-const displayOptions = {
-  displayColors: true,
-  displayReferences: true,
-}
-
-const store = new Vuex.Store({
-  getters: {
-    'kanban/displayOptions'() {
-      return displayOptions
-    },
-  },
-  actions,
-})
-
 describe('MatterCard', () => {
-  test('is a Vue instance', () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        matter,
-      },
-      localVue,
-      store,
+  describe('Existing matter', () => {
+    let wrapperMatter
+
+    beforeEach(() => {
+      wrapperMatter = shallowMount(MatterCard, {
+        propsData: {
+          stageIndex,
+          data: matter,
+        },
+        localVue,
+        store: new Vuex.Store({
+          getters: {
+            'kanban/displayOptions'() {
+              return {
+                displayColors: false,
+                displayReferences: false,
+              }
+            },
+          },
+          actions: {
+            'kanban/updateMatter': jest.fn(),
+          },
+        }),
+      })
     })
-    expect(wrapper.vm).toBeTruthy()
+
+    test('has a title', () => {
+      expect(wrapperMatter.find('[data-test=matter-title]').text()).toMatch(
+        matter.title
+      )
+    })
+
+    test('has a reference', () => {
+      expect(wrapperMatter.find('[data-test=matter-reference]').text()).toMatch(
+        `#${matter.reference}`
+      )
+    })
+
+    test("don't apply border color style if display options colors to false", () => {
+      expect(
+        wrapperMatter.find('[data-test=matter-card]').attributes('style')
+      ).toBeFalsy()
+    })
+
+    test("don't show reference if display options references to false", () => {
+      expect(
+        wrapperMatter.find('[data-test=matter-reference]').isVisible()
+      ).toBeFalsy()
+    })
+
+    test('edit a matter emit updateDone event', async () => {
+      wrapperMatter.find('[data-test=matter-title]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      wrapperMatter.vm.matter.title = 'An edited matter'
+      wrapperMatter
+        .find('[data-test=matter-input-title]')
+        .trigger('keyup.enter')
+
+      expect(wrapperMatter.emitted('updateDone')).toHaveLength(1)
+      expect(wrapperMatter.emitted('updateDone')[0]).toEqual([false])
+    })
+
+    test('edit a card with title then color must not focus title field', async () => {
+      // click on title to edit the matter
+      wrapperMatter.find('[data-test=matter-title]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      wrapperMatter.find('[data-test=matter-input-title]').trigger('blur')
+      await wrapperMatter.vm.$nextTick()
+
+      // Simulate an outside click out of the color box
+      wrapperMatter.vm.focusFieldIfEmptyTitle()
+      await wrapperMatter.vm.$nextTick()
+
+      expect(
+        wrapperMatter
+          .find('[data-test=matter-input-title]')
+          .attributes('aria-activedescendant')
+      ).toBeFalsy()
+    })
   })
 
-  test('has a title', () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        matter,
-      },
-      localVue,
-      store,
-    })
-    expect(wrapper.find('[data-test=matter-title]').text()).toMatch(
-      matter.title
-    )
-  })
+  describe('New matter', () => {
+    let wrapperNewMatter
 
-  test('has a reference', () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        matter,
-      },
-      localVue,
-      store,
-    })
-    expect(wrapper.find('[data-test=matter-reference]').text()).toMatch(
-      `#${matter.reference}`
-    )
-  })
-
-  test('impossible to create card if invalid form', async () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        edit: true,
-      },
-      localVue,
-      store,
+    beforeEach(() => {
+      wrapperNewMatter = shallowMount(MatterCard, {
+        propsData: {
+          stageIndex,
+          newMatter: true,
+          action: Action.NEW,
+        },
+        localVue,
+        store: new Vuex.Store({
+          getters: {
+            'kanban/displayOptions'() {
+              return {
+                displayColors: true,
+                displayReferences: true,
+              }
+            },
+          },
+          actions: {
+            'kanban/createMatter': jest.fn(),
+          },
+        }),
+      })
     })
 
-    wrapper.vm.matter.title = ''
-    wrapper.find('[data-test=matter-input-title]').trigger('keyup.enter')
-    await wrapper.vm.$nextTick()
+    test('create a card if valid form emit updateDone event', async () => {
+      wrapperNewMatter.vm.matter.title = 'A simple matter'
+      wrapperNewMatter
+        .find('[data-test=matter-input-title]')
+        .trigger('keyup.enter')
+      await wrapperNewMatter.vm.$nextTick()
 
-    expect(wrapper.emitted('editDone')).toBeFalsy()
-  })
-
-  test('create a card if valid form', async () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        edit: true,
-      },
-      localVue,
-      store,
+      expect(wrapperNewMatter.emitted('updateDone')).toHaveLength(1)
+      expect(wrapperNewMatter.emitted('updateDone')[0]).toEqual([false])
     })
 
-    wrapper.vm.matter.title = 'A simple matter'
-    wrapper.find('[data-test=matter-input-title]').trigger('keyup.enter')
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.emitted('editDone')).toHaveLength(1)
-    expect(wrapper.emitted('editDone')[0]).toEqual([false])
-  })
-
-  test('focus field title if color has been chosen before to write a title', () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        edit: true,
-      },
-      localVue,
-      store,
+    test('create a card must focus field title', () => {
+      expect(
+        wrapperNewMatter
+          .find('[data-test=matter-input-title]')
+          .attributes('aria-activedescendant')
+      ).toBeTruthy()
     })
 
-    // Simulate an outside click to focus title field
-    wrapper.vm.focusFieldIfEmptyTitle()
-  })
+    test('create a card must focus field title if color has been chosen before to write a title', () => {
+      /// Simulate an outside click out of the color box
+      wrapperNewMatter.vm.focusFieldIfEmptyTitle()
 
-  test("don't focus field not empty title if color has been chosen", () => {
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        edit: true,
-      },
-      localVue,
-      store,
+      expect(
+        wrapperNewMatter
+          .find('[data-test=matter-input-title]')
+          .attributes('aria-activedescendant')
+      ).toBeTruthy()
     })
-    wrapper.vm.matter.title = 'A simple matter'
-    // Simulate an outside click without focus title field
-    wrapper.vm.focusFieldIfEmptyTitle()
-  })
-  test("don't apply border color style if display options colors to false", () => {
-    displayOptions.displayColors = false
+    test('invalid form must have a border color', async () => {
+      wrapperNewMatter.find('[data-test=matter-add]').trigger('click')
+      await wrapperNewMatter.vm.$nextTick()
 
-    const wrapper = shallowMount(MatterCard, {
-      propsData: {
-        stageIndex,
-        edit: true,
-      },
-      localVue,
-      store,
+      expect(wrapperNewMatter.vm.formError).toBeTruthy()
     })
 
-    expect(
-      wrapper.find('[data-test=matter-card]').attributes('style')
-    ).toBeFalsy()
+    test('invalid form must have a border color', async () => {
+      wrapperNewMatter.find('[data-test=matter-add]').trigger('click')
+      await wrapperNewMatter.vm.$nextTick()
+
+      expect(wrapperNewMatter.vm.formError).toBeTruthy()
+    })
   })
 })

@@ -24,7 +24,10 @@ export const mutations: MutationTree<RootState> = {
   CREATE_MATTER: (state, { stageIndex, matter }) => {
     state.stages[stageIndex].cards.push(matter)
   },
-  UPDATE_MATTER: (state, { stageIndex, matters }) => {
+  UPDATE_MATTER: (state, { stageIndex, matterIndex, matter }) => {
+    state.stages[stageIndex].cards[matterIndex] = matter
+  },
+  UPDATE_STAGE_MATTERS: (state, { stageIndex, matters }) => {
     state.stages[stageIndex].cards = matters
   },
   DISPLAY_OPTION: (state, { option, isVisible }) => {
@@ -35,7 +38,7 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   createMatter({ commit, getters }, { stageIndex, matter }) {
     // await back-end response to create matter
-    console.info('BACK-END response to create matter')
+    console.info('[PUT] BACK-END response to create matter')
     commit('CREATE_MATTER', {
       stageIndex,
       matter: {
@@ -46,5 +49,10 @@ export const actions: ActionTree<RootState, RootState> = {
         color: matter.color,
       },
     })
+  },
+  updateMatter({ commit }, { stageIndex, matterIndex, matter }) {
+    // await back-end response to create matter
+    console.info('[POST] BACK-END response to edit matter')
+    commit('UPDATE_MATTER', { stageIndex, matterIndex, matter })
   },
 }

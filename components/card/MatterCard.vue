@@ -2,19 +2,22 @@
   <div
     data-test="matter-card"
     class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white"
-    :class="edit ? 'pr-2' : 'cursor-move pr-8'"
+    :class="isNewItem ? 'pr-2' : 'cursor-move pr-8'"
     :style="borderColor"
   >
-    <template v-if="edit">
+    <template v-if="editing">
       <div class="flex justify-between items-center">
         <input
           ref="title"
           v-model="matter.title"
           type="text"
           data-test="matter-input-title"
+          :aria-activedescendant="isFocusTitle"
           class="border rounded border-gray-300 py-2 px-3 w-full transition duration-150 ease-in-out text-indigo-600 font-medium hover:border-kanban-lightgreen focus:border-gray-500 focus:outline-none mr-4"
+          :class="{ 'focus:border-red-700': formError && matter.title === '' }"
           placeholder="Title of your matter"
           @keyup.enter="saveCard"
+          @blur="isFocusTitle = false"
         />
         <verte
           v-model="matter.color"
@@ -27,16 +30,16 @@
       <div class="flex items-center">
         <button
           type="button"
-          data-test="stage-add-matter"
+          data-test="matter-cancel"
           class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-orange-500 dark:hover:text-orange-500 hover:border-orange-500 focus:outline-none focus:border-text-orange-500"
-          @click="emitDone"
+          @click="updateDone"
         >
           <icon-cancel class="h-5 w-5" />
           <span>Cancel</span>
         </button>
         <button
           type="button"
-          data-test="stage-add-matter"
+          data-test="matter-add"
           class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-light-blue-300"
           @click="saveCard"
         >
@@ -48,7 +51,8 @@
     <template v-else>
       <h2
         data-test="matter-title"
-        class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
+        class="text-gray-700 font-semibold font-sans tracking-wide text-sm cursor-text"
+        @click="editAndFocusTitleField"
       >
         {{ matter.title }}
       </h2>
@@ -67,6 +71,7 @@
 import Vue, { PropOptions } from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 import { MatterCard } from '~/types/matter-card'
+import { Action } from '~/types/action'
 import IconCancel from '~/components/icons/Cancel.vue'
 import IconSave from '~/components/icons/Save.vue'
 import { generateHexColor } from '~/utils/generator'
@@ -82,7 +87,11 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
-    matter: {
+    matterIndex: {
+      type: Number,
+      default: 0,
+    },
+    data: {
       type: Object as () => MatterCard,
       default() {
         return {
@@ -94,53 +103,94 @@ export default Vue.extend({
         }
       },
     } as PropOptions<MatterCard>,
-    edit: {
+    newMatter: {
       type: Boolean,
       default: false,
     },
+    action: {
+      type: String as () => Action,
+      default: Action.UPDATE,
+    } as PropOptions<Action>,
+  },
+  data() {
+    return {
+      editing: false,
+      isFocusTitle: false,
+      formError: false,
+      matter: {} as MatterCard,
+    }
   },
   computed: {
     ...mapGetters({
       displayOptions: 'kanban/displayOptions',
     }),
-    isValidFormCard(): Boolean {
-      return this.matter.title !== ''
+    isValidFormCard(): boolean {
+      return this.matter.title.trim() !== ''
     },
     borderColor(): string {
       return this.displayOptions.displayColors
         ? `border-color: ${this.matter.color}`
         : ''
     },
+    isNewItem(): boolean {
+      return this.action === Action.NEW
+    },
   },
   mounted(): void {
-    if (this.edit) {
-      this.focusTitleField()
-    }
+    this.editing = this.isNewItem || this.newMatter
+    this.matter = Object.assign({}, this.data)
+    this.$nextTick(() => {
+      if (this.editing) {
+        this.focusTitleField()
+      }
+    })
   },
   methods: {
     ...mapActions({
-      createMatterCard: 'kanban/createMatter',
+      createMatter: 'kanban/createMatter',
+      updateMatter: 'kanban/updateMatter',
     }),
+    saveCard(): void {
+      this.formError = false
+
+      if (this.editing && this.isValidFormCard) {
+        if (this.isNewItem) {
+          this.createMatter({
+            stageIndex: this.stageIndex,
+            matter: this.matter,
+          })
+        } else {
+          this.updateMatter({
+            stageIndex: this.stageIndex,
+            matterIndex: this.matterIndex,
+            matter: this.matter,
+          })
+        }
+
+        this.updateDone()
+
+        // catch back-end error to display toaster message ;)
+      } else {
+        this.formError = true
+      }
+    },
+    editAndFocusTitleField(): void {
+      this.editing = true
+      this.$nextTick(() => {
+        this.focusTitleField()
+      })
+    },
+    updateDone(): void {
+      this.editing = false
+      this.$emit('updateDone', false)
+    },
     focusTitleField(): void {
       const title: any = this.$refs.title
       title.focus()
-    },
-    saveCard(): void {
-      if (this.edit && this.isValidFormCard) {
-        this.createMatterCard({
-          stageIndex: this.stageIndex,
-          matter: this.matter,
-        })
-        this.emitDone()
-
-        // catch back-end error to display toaster message ;)
-      }
-    },
-    emitDone(): void {
-      this.$emit('editDone', false)
+      this.isFocusTitle = true
     },
     focusFieldIfEmptyTitle(): void {
-      if (this.edit && this.matter.title === '') {
+      if (this.matter.title === '') {
         this.focusTitleField()
       }
     },

@@ -10,7 +10,7 @@ Vue.component('draggable', Draggable)
 const localVue = createLocalVue()
 localVue.use(Vuex)
 const mutations = {
-  UPDATE_MATTER: jest.fn(),
+  UPDATE_STAGE_MATTERS: jest.fn(),
 }
 const actions = {}
 
@@ -109,7 +109,7 @@ describe('StageCard', () => {
 
     expect(wrapper.find('[data-test=stage-add-matter]').exists()).toBeFalsy()
 
-    wrapper.vm.editDone()
+    wrapper.vm.updateDone()
     await wrapper.vm.$nextTick()
 
     expect(wrapper.find('[data-test=stage-add-matter]').exists()).toBeTruthy()

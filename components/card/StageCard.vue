@@ -23,18 +23,21 @@
     >
       <!-- Each matter from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
       <matter-card
-        v-for="matter in matters"
+        v-for="(matter, matterIndex) in matters"
         :key="matter.id"
         :stage-index="stageIndex"
-        :matter="matter"
+        :matter-index="matterIndex"
+        :data="matter"
+        @updateDone="updateDone"
       />
     </draggable>
 
-    <template v-if="addMatterCard">
+    <template v-if="isNewMatter">
       <matter-card
         :stage-index="stageIndex"
-        :edit="addMatterCard"
-        @editDone="editDone"
+        :new-matter="true"
+        :action="action"
+        @updateDone="updateDone"
       />
     </template>
     <template v-else>
@@ -42,7 +45,7 @@
         type="button"
         data-test="stage-add-matter"
         class="inline-flex items-center pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-kanban-lightgreen"
-        @click="addMatterCard = true"
+        @click="isNewMatter = true"
       >
         <icon-add class="h-5 w-5" />
         <span>Add</span>
@@ -56,6 +59,7 @@ import Vue from 'vue'
 import MatterCardComponent from '~/components/card/MatterCard.vue'
 import IconAdd from '~/components/icons/Add.vue'
 import { MatterCard } from '~/types/matter-card'
+import { Action } from '~/types/action'
 
 export default Vue.extend({
   name: 'StageCard' as string,
@@ -75,7 +79,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      addMatterCard: false,
+      isNewMatter: false,
+      action: Action.NEW,
     }
   },
   computed: {
@@ -85,7 +90,7 @@ export default Vue.extend({
       },
       set(value: String) {
         this.$store.commit(
-          'kanban/UPDATE_MATTER',
+          'kanban/UPDATE_STAGE_MATTERS',
           { stageIndex: this.stageIndex, matters: value },
           { root: true }
         )
@@ -93,8 +98,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    editDone(): void {
-      this.addMatterCard = false
+    updateDone(): void {
+      this.isNewMatter = false
     },
   },
 })
