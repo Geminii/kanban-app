@@ -1,11 +1,18 @@
 <template>
   <div class="bg-gray-100 rounded-lg px-3 py-3 column-width rounded">
-    <h2
-      data-test="stage-title"
-      class="text-gray-700 font-semibold font-sans tracking-wide text-lg mb-4"
-    >
-      {{ stage.title }}
-    </h2>
+    <div class="flex justify-between mb-4">
+      <h2
+        data-test="stage-title"
+        class="text-gray-700 font-semibold font-sans tracking-wide text-lg"
+      >
+        {{ stage.title }}
+      </h2>
+      <span
+        class="rounded-full h-6 w-6 flex items-center justify-center text-xs font-medium leading-4 bg-blue-200 text-teal-800"
+      >
+        {{ matters.length }}
+      </span>
+    </div>
 
     <!-- Draggable component -->
     <draggable
