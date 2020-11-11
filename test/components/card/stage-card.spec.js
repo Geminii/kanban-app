@@ -38,8 +38,10 @@ const mattersStage = {
 const countMatters = mattersStage.cards.length
 
 describe('StageCard', () => {
-  test('is a Vue instance', () => {
-    const wrapper = shallowMount(StageCard, {
+  let wrapper
+
+  beforeEach(() => {
+    wrapper = shallowMount(StageCard, {
       propsData: {
         stageIndex: 0,
         stage: emptyStage,
@@ -47,45 +49,19 @@ describe('StageCard', () => {
       localVue,
       store,
     })
-    expect(wrapper.vm).toBeTruthy()
   })
 
   test('has a title', () => {
-    const wrapper = shallowMount(StageCard, {
-      propsData: {
-        stageIndex: 0,
-        stage: emptyStage,
-      },
-      localVue,
-      store,
-    })
     expect(wrapper.find('[data-test=stage-title]').text()).toMatch(
       emptyStage.title
     )
   })
 
   test(`has ${countMatters} matters in stage`, () => {
-    const wrapper = shallowMount(StageCard, {
-      propsData: {
-        stageIndex: 0,
-        stage: mattersStage,
-      },
-      localVue,
-      store,
-    })
     expect(wrapper.findAll('matter-card-stub').length).toEqual(countMatters)
   })
 
   test(`add matter into stage`, async () => {
-    const wrapper = shallowMount(StageCard, {
-      propsData: {
-        stageIndex: 0,
-        stage: mattersStage,
-      },
-      localVue,
-      store,
-    })
-
     const addMatterButton = wrapper.find('[data-test=stage-add-matter]')
     addMatterButton.trigger('click')
     await wrapper.vm.$nextTick()
@@ -95,14 +71,6 @@ describe('StageCard', () => {
   })
 
   test(`get edit done matter event`, async () => {
-    const wrapper = shallowMount(StageCard, {
-      propsData: {
-        stageIndex: 0,
-        stage: mattersStage,
-      },
-      localVue,
-      store,
-    })
     const addMatterButton = wrapper.find('[data-test=stage-add-matter]')
     addMatterButton.trigger('click')
     await wrapper.vm.$nextTick()
@@ -115,6 +83,15 @@ describe('StageCard', () => {
     expect(wrapper.find('[data-test=stage-add-matter]').exists()).toBeTruthy()
   })
 
+  test('disabled draggable behavior if a matter emit disabledDraggable event', async () => {
+    wrapper.vm.disabledDraggableDone(true)
+    await wrapper.vm.$nextTick()
+
+    expect(
+      wrapper.find('[data-test=stage-draggable]').attributes('disabled')
+    ).toBeTruthy()
+  })
+
   test(`insert a matter inside a stage`, async () => {
     const newMatter = {
       id: 'a4202556-8421-40e9-b05d-7774b586b3f3',
@@ -123,14 +100,7 @@ describe('StageCard', () => {
       order: 0,
       color: '#347be5',
     }
-    const wrapper = shallowMount(StageCard, {
-      propsData: {
-        stageIndex: 0,
-        stage: mattersStage,
-      },
-      localVue,
-      store,
-    })
+
     // Change matters in a stage of the store
     store.state.kanban.stages = [
       {
@@ -140,6 +110,7 @@ describe('StageCard', () => {
         cards: [newMatter],
       },
     ]
+
     // Trigger new matters in stage
     wrapper.setData({
       matters: [newMatter],

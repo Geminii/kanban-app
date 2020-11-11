@@ -25,6 +25,12 @@ const $toast = {
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
+async function editTitle(wrapperMatter) {
+  // click on title to edit the matter
+  wrapperMatter.find('[data-test=matter-title]').trigger('click')
+  await wrapperMatter.vm.$nextTick()
+}
+
 describe('MatterCard', () => {
   describe('Existing matter', () => {
     let wrapperMatter
@@ -82,8 +88,7 @@ describe('MatterCard', () => {
     })
 
     test('edit a matter emit updateDone event', async () => {
-      wrapperMatter.find('[data-test=matter-title]').trigger('click')
-      await wrapperMatter.vm.$nextTick()
+      await editTitle(wrapperMatter)
 
       wrapperMatter.vm.matter.title = 'An edited matter'
       wrapperMatter
@@ -97,9 +102,7 @@ describe('MatterCard', () => {
     })
 
     test('edit a card with title then color must not focus title field', async () => {
-      // click on title to edit the matter
-      wrapperMatter.find('[data-test=matter-title]').trigger('click')
-      await wrapperMatter.vm.$nextTick()
+      await editTitle(wrapperMatter)
 
       wrapperMatter.find('[data-test=matter-input-title]').trigger('blur')
       await wrapperMatter.vm.$nextTick()
@@ -113,6 +116,16 @@ describe('MatterCard', () => {
           .find('[data-test=matter-input-title]')
           .attributes('aria-activedescendant')
       ).toBeFalsy()
+    })
+
+    test('disabled draggable behavior if color picker opened', async () => {
+      await editTitle(wrapperMatter)
+
+      wrapperMatter.find('[data-test=matter-colorpicker]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      expect(wrapperMatter.emitted('disabledDraggable')).toHaveLength(1)
+      expect(wrapperMatter.emitted('disabledDraggable')[0]).toEqual([true])
     })
   })
 

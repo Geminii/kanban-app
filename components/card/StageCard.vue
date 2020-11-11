@@ -20,6 +20,9 @@
       :animation="150"
       ghost-class="ghost-card"
       group="cards"
+      :class="!isNewMatter ? 'min-h-75 mb-4' : ''"
+      data-test="stage-draggable"
+      :disabled="disabledDraggable"
     >
       <!-- Each matter from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
       <matter-card
@@ -28,7 +31,7 @@
         :stage-index="stageIndex"
         :matter-index="matterIndex"
         :data="matter"
-        @updateDone="updateDone"
+        @disabledDraggable="disabledDraggableDone"
       />
     </draggable>
 
@@ -37,6 +40,7 @@
         :stage-index="stageIndex"
         :new-matter="true"
         :action="action"
+        @disabledDraggable="disabledDraggableDone"
         @updateDone="updateDone"
       />
     </template>
@@ -81,6 +85,7 @@ export default Vue.extend({
     return {
       isNewMatter: false,
       action: Action.NEW,
+      disabledDraggable: false,
     }
   },
   computed: {
@@ -98,8 +103,11 @@ export default Vue.extend({
     },
   },
   methods: {
-    updateDone(): void {
-      this.isNewMatter = false
+    updateDone(isNewMatter: boolean): void {
+      this.isNewMatter = isNewMatter
+    },
+    disabledDraggableDone(disabledDraggable: boolean): void {
+      this.disabledDraggable = disabledDraggable
     },
   },
 })

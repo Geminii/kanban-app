@@ -10,6 +10,11 @@ module.exports = {
       0: 0,
       6: '6px',
     },
+    minHeight: {
+      20: '20px',
+      60: '60px',
+      75: '75px',
+    },
     extend: {
       colors: {
         kanban: {

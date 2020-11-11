@@ -1,7 +1,7 @@
 <template>
   <div
     data-test="matter-card"
-    class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white transition duration-500 ease-out-in"
+    class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white"
     :class="isNewItem ? 'pr-2' : 'cursor-move pr-8'"
     :style="borderColor"
   >
@@ -21,13 +21,20 @@
           @keyup.enter="saveCard"
           @blur="isFocusTitle = false"
         />
-        <verte
-          v-model="matter.color"
-          v-click-outside="focusFieldIfEmptyTitle"
-          menu-position="center"
-          picker="square"
-          model="hex"
-        ></verte>
+        <button
+          type="button"
+          class="focus:outline-none"
+          data-test="matter-colorpicker"
+          @click="disabledDraggable"
+        >
+          <verte
+            v-model="matter.color"
+            menu-position="center"
+            picker="square"
+            model="hex"
+            @close="focusFieldIfEmptyTitle"
+          ></verte>
+        </button>
       </div>
       <div class="flex items-center">
         <button
@@ -150,6 +157,7 @@ export default Vue.extend({
     ...mapActions({
       createMatter: 'kanban/createMatter',
       updateMatter: 'kanban/updateMatter',
+      isDraggable: 'kanban/updateDraggable',
     }),
     async saveCard() {
       this.formError = false
@@ -197,9 +205,14 @@ export default Vue.extend({
       this.isFocusTitle = true
     },
     focusFieldIfEmptyTitle(): void {
+      this.$emit('disabledDraggable', false)
+
       if (this.matter.title === '') {
         this.focusTitleField()
       }
+    },
+    disabledDraggable() {
+      this.$emit('disabledDraggable', true)
     },
   },
 })
