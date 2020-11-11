@@ -5,7 +5,7 @@
         <button
           id="options-menu"
           type="button"
-          class="inline-flex justify-center w-full rounded-md border border-gray-300 pl-4 pr-2 py-2 bg-white text-sm leading-5 font-medium text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen focus:outline-none focus:border-blue-300 focus:shadow-outline-blue hover:border-kanban-lightgreen"
+          class="inline-flex justify-center w-full rounded-md border border-gray-300 pl-4 pr-2 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen focus:outline-none focus:border-blue-300 focus:shadow-outline-blue hover:border-kanban-lightgreen"
           aria-haspopup="true"
           aria-expanded="true"
           data-test="options-dropdown"

@@ -44,7 +44,7 @@
       <button
         type="button"
         data-test="stage-add-matter"
-        class="inline-flex items-center pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 light:hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-kanban-lightgreen"
+        class="inline-flex items-center pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-kanban-lightgreen"
         @click="isNewMatter = true"
       >
         <icon-add class="h-5 w-5" />
