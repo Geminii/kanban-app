@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import IconBrand from '~/components/icons/brand.vue'
+import IconBrand from '~/components/icons/Brand.vue'
 
 export default Vue.extend({
   name: 'Header' as string,

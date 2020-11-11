@@ -27,8 +27,8 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import IconHeart from '~/components/icons/heart.vue'
-import IconGithub from '~/components/icons/github.vue'
+import IconHeart from '~/components/icons/Heart.vue'
+import IconGithub from '~/components/icons/Github.vue'
 import ColorMode from '~/components/ColorMode.vue'
 
 export default Vue.extend({

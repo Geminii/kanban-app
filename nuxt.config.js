@@ -24,8 +24,6 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    // https://color-mode.nuxtjs.org/
-    '@nuxtjs/color-mode',
   ],
 
   plugins: [
@@ -38,7 +36,15 @@ export default {
     preference: 'light',
   },
 
-  modules: ['@nuxtjs/toast'],
+  purgeCSS: {
+    whitelist: ['dark-mode'],
+  },
+
+  modules: [
+    // https://color-mode.nuxtjs.org/
+    '@nuxtjs/color-mode',
+    '@nuxtjs/toast',
+  ],
 
   // https://www.npmjs.com/package/@nuxtjs/toast
   toast: {
