@@ -2,6 +2,7 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import defaultStages from '~/data/default-stages'
 import ConfigHandler from '~/data/default-config-handler'
+import { DisplayOptions } from '~/types/display-options'
 import { HttpStatusCode } from '~/types/http-status-code'
 
 export const state = () => ({
@@ -9,7 +10,7 @@ export const state = () => ({
   displayOptions: {
     displayColors: true,
     displayReferences: true,
-  },
+  } as DisplayOptions,
 })
 
 export type RootState = ReturnType<typeof state>
