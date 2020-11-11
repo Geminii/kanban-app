@@ -3,14 +3,24 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import vClickOutside from 'v-click-outside'
 import Verte from 'verte'
+import flushPromises from 'flush-promises'
 import MatterCard from '~/components/card/MatterCard.vue'
 import defaultStages from '~/data/default-stages'
+import ConfigHandler from '~/data/default-config-handler'
 import { Action } from '~/types/action'
 Vue.use(vClickOutside)
 Vue.use(Verte)
 
 const stageIndex = 0
 const matter = defaultStages.stages[stageIndex].cards[0]
+const $toast = {
+  success() {
+    return ''
+  },
+  error() {
+    return ''
+  },
+}
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -25,6 +35,9 @@ describe('MatterCard', () => {
           stageIndex,
           data: matter,
         },
+        mocks: {
+          $toast,
+        },
         localVue,
         store: new Vuex.Store({
           getters: {
@@ -36,7 +49,9 @@ describe('MatterCard', () => {
             },
           },
           actions: {
-            'kanban/updateMatter': jest.fn(),
+            'kanban/updateMatter'() {
+              return Promise.resolve()
+            },
           },
         }),
       })
@@ -74,6 +89,8 @@ describe('MatterCard', () => {
       wrapperMatter
         .find('[data-test=matter-input-title]')
         .trigger('keyup.enter')
+      await wrapperMatter.vm.$nextTick()
+      await flushPromises()
 
       expect(wrapperMatter.emitted('updateDone')).toHaveLength(1)
       expect(wrapperMatter.emitted('updateDone')[0]).toEqual([false])
@@ -109,6 +126,9 @@ describe('MatterCard', () => {
           newMatter: true,
           action: Action.NEW,
         },
+        mocks: {
+          $toast,
+        },
         localVue,
         store: new Vuex.Store({
           getters: {
@@ -120,7 +140,9 @@ describe('MatterCard', () => {
             },
           },
           actions: {
-            'kanban/createMatter': jest.fn(),
+            'kanban/createMatter'() {
+              return Promise.resolve()
+            },
           },
         }),
       })
@@ -132,6 +154,7 @@ describe('MatterCard', () => {
         .find('[data-test=matter-input-title]')
         .trigger('keyup.enter')
       await wrapperNewMatter.vm.$nextTick()
+      await flushPromises()
 
       expect(wrapperNewMatter.emitted('updateDone')).toHaveLength(1)
       expect(wrapperNewMatter.emitted('updateDone')[0]).toEqual([false])
@@ -167,6 +190,48 @@ describe('MatterCard', () => {
       await wrapperNewMatter.vm.$nextTick()
 
       expect(wrapperNewMatter.vm.formError).toBeTruthy()
+    })
+  })
+
+  describe('Error handling', () => {
+    let wrapperError
+
+    beforeEach(() => {
+      wrapperError = shallowMount(MatterCard, {
+        propsData: {
+          stageIndex,
+          newMatter: true,
+          action: Action.NEW,
+        },
+        mocks: {
+          $toast,
+        },
+        localVue,
+        store: new Vuex.Store({
+          getters: {
+            'kanban/displayOptions'() {
+              return {
+                displayColors: true,
+                displayReferences: true,
+              }
+            },
+          },
+          actions: {
+            'kanban/createMatter'() {
+              return Promise.reject(Error)
+            },
+          },
+        }),
+      })
+    })
+
+    test(`Catch error when creating ${ConfigHandler.MATTER_TITLE_ERROR} matter`, async () => {
+      wrapperError.vm.matter.title = ConfigHandler.MATTER_TITLE_ERROR
+      wrapperError.find('[data-test=matter-input-title]').trigger('keyup.enter')
+      await wrapperError.vm.$nextTick()
+      await flushPromises()
+
+      expect(wrapperError.emitted().updateDone).toBeFalsy()
     })
   })
 })
