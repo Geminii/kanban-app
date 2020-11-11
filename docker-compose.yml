@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  kanban:
+    container_name: "kanban"
+    ports:
+      - 3000:3000
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      NUXT_PORT: 3000
+      NUXT_HOST: 0.0.0.0
+      NODE_ENV: production
+    networks:
+      - kanban
+
+networks:
+  kanban:
+    driver: bridge

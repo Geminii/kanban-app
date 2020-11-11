@@ -8,6 +8,9 @@
   - [Getting started](#getting-started)
   - [Conventional Commits](#conventional-commits)
   - [Build Setup](#build-setup)
+  - [Containerized application](#containerized-application)
+    - [Using Dockerfile only](#using-dockerfile-only)
+    - [Using Docker compose](#using-docker-compose)
 
 ## Getting started
 
@@ -31,3 +34,25 @@ $ yarn start
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Containerized application
+You are not a web developper but you want to try the app and maybe deploy it everywhere around the world ? 
+Let's some fun :) 
+
+### Using Dockerfile only
+```bash
+# Build our kanban app image
+docker build -t kanban .
+
+# Run it in detach mode
+docker run --name kanban -p 3000:3000 kanban
+```
+
+### Using Docker compose
+```bash
+# Build in detach mode our kanban app image
+docker-compose up -d --build
+
+# To enter inside the kanban container
+docker-compose exec kanban sh
+```
