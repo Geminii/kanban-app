@@ -1,11 +1,11 @@
 <template>
   <div
     data-test="matter-card"
-    class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white"
+    class="border rounded border-t-4 relative pl-2 py-4 mb-4 bg-white transition duration-500 ease-out-in"
     :class="isNewItem ? 'pr-2' : 'cursor-move pr-8'"
     :style="borderColor"
   >
-    <template v-if="editing">
+    <div v-if="editing">
       <div class="flex justify-between items-center">
         <input
           ref="title"
@@ -13,8 +13,10 @@
           type="text"
           data-test="matter-input-title"
           :aria-activedescendant="isFocusTitle"
-          class="border rounded border-gray-300 py-2 px-3 w-full transition duration-150 ease-in-out text-indigo-600 font-medium hover:border-kanban-lightgreen focus:border-gray-500 focus:outline-none mr-4"
-          :class="{ 'focus:border-red-700': formError && matter.title === '' }"
+          class="border rounded border-gray-300 py-2 px-3 w-full text-indigo-600 text-sm font-semibold font-sans tracking-wide hover:border-kanban-lightgreen focus:border-gray-500 focus:outline-none mr-4 leading-3"
+          :class="{
+            'focus:border-red-700': formError && matter.title === '',
+          }"
           placeholder="Title of your matter"
           @keyup.enter="saveCard"
           @blur="isFocusTitle = false"
@@ -47,23 +49,22 @@
           <span>Save</span>
         </button>
       </div>
-    </template>
-    <template v-else>
-      <h2
-        data-test="matter-title"
-        class="text-gray-700 font-semibold font-sans tracking-wide text-sm cursor-text"
-        @click="editAndFocusTitleField"
-      >
-        {{ matter.title }}
-      </h2>
-      <span
-        v-show="displayOptions.displayReferences"
-        data-test="matter-reference"
-        class="absolute text-sm text-gray-600 top-0 right-6"
-      >
-        #{{ matter.reference }}
-      </span>
-    </template>
+    </div>
+    <h2
+      v-else
+      data-test="matter-title"
+      class="border border-transparent leading-5 text-gray-700 py-2 px-3 font-semibold font-sans tracking-wide text-sm cursor-text"
+      @click="editAndFocusTitleField"
+    >
+      {{ matter.title }}
+    </h2>
+    <span
+      v-show="displayOptions.displayReferences"
+      data-test="matter-reference"
+      class="absolute text-sm text-gray-600 top-0 right-6"
+    >
+      #{{ matter.reference }}
+    </span>
   </div>
 </template>
 
@@ -197,3 +198,14 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

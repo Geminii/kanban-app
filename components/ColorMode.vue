@@ -1,7 +1,7 @@
 <template>
   <button
     aria-label="Color Mode"
-    class="rounded-md hover:text-kanban-lightgreen focus:outline-none transition ease-in-out"
+    class="rounded-md hover:text-kanban-lightgreen focus:outline-none"
     :class="$colorMode.value === 'dark' ? 'text-white' : 'text-kanban-gray'"
     @click="
       $colorMode.value === 'dark'
