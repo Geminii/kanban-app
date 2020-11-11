@@ -1,6 +1,8 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import defaultStages from '~/data/default-stages'
+import ConfigHandler from '~/data/default-config-handler'
+import { HttpStatusCode } from '~/types/http-status-code'
 
 export const state = () => ({
   stages: defaultStages.stages,
@@ -37,22 +39,40 @@ export const mutations: MutationTree<RootState> = {
 
 export const actions: ActionTree<RootState, RootState> = {
   createMatter({ commit, getters }, { stageIndex, matter }) {
-    // await back-end response to create matter
-    console.info('[PUT] BACK-END response to create matter')
-    commit('CREATE_MATTER', {
-      stageIndex,
-      matter: {
-        id: uuidv4(),
-        title: matter.title,
-        reference: getters.countTotalCards + 1,
-        order: getters.getLastOrderMatter(stageIndex),
-        color: matter.color,
-      },
+    return new Promise((resolve, reject) => {
+      // await back-end response to create matter
+      console.info('[PUT] BACK-END response to create matter')
+
+      // Simulate a back-end response error
+      if (matter.title === ConfigHandler.MATTER_TITLE_ERROR) {
+        reject(HttpStatusCode.INTERNAL_SERVER_ERROR)
+      } else {
+        commit('CREATE_MATTER', {
+          stageIndex,
+          matter: {
+            id: uuidv4(),
+            title: matter.title,
+            reference: getters.countTotalCards + 1,
+            order: getters.getLastOrderMatter(stageIndex),
+            color: matter.color,
+          },
+        })
+        resolve()
+      }
     })
   },
   updateMatter({ commit }, { stageIndex, matterIndex, matter }) {
-    // await back-end response to create matter
-    console.info('[POST] BACK-END response to edit matter')
-    commit('UPDATE_MATTER', { stageIndex, matterIndex, matter })
+    return new Promise((resolve, reject) => {
+      // await back-end response to create matter
+      console.info('[POST] BACK-END response to edit matter')
+
+      // Simulate a back-end response error
+      if (matter.title === ConfigHandler.MATTER_TITLE_ERROR) {
+        reject(HttpStatusCode.INTERNAL_SERVER_ERROR)
+      } else {
+        commit('UPDATE_MATTER', { stageIndex, matterIndex, matter })
+        resolve()
+      }
+    })
   },
 }

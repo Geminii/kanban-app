@@ -151,26 +151,32 @@ export default Vue.extend({
       createMatter: 'kanban/createMatter',
       updateMatter: 'kanban/updateMatter',
     }),
-    saveCard(): void {
+    async saveCard() {
       this.formError = false
 
       if (this.editing && this.isValidFormCard) {
-        if (this.isNewItem) {
-          this.createMatter({
-            stageIndex: this.stageIndex,
-            matter: this.matter,
-          })
-        } else {
-          this.updateMatter({
-            stageIndex: this.stageIndex,
-            matterIndex: this.matterIndex,
-            matter: this.matter,
-          })
+        try {
+          if (this.isNewItem) {
+            await this.createMatter({
+              stageIndex: this.stageIndex,
+              matter: this.matter,
+            }).then(() => {
+              this.updateDone()
+              this.$toast.success('Matter created successfully')
+            })
+          } else {
+            await this.updateMatter({
+              stageIndex: this.stageIndex,
+              matterIndex: this.matterIndex,
+              matter: this.matter,
+            }).then(() => {
+              this.updateDone()
+              this.$toast.success('Matter updated successfully')
+            })
+          }
+        } catch {
+          this.$toast.error(`An error occured for ${this.matter.title}...`)
         }
-
-        this.updateDone()
-
-        // catch back-end error to display toaster message ;)
       } else {
         this.formError = true
       }

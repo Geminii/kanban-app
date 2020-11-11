@@ -38,6 +38,14 @@ export default {
     preference: 'light',
   },
 
+  modules: ['@nuxtjs/toast'],
+
+  // https://www.npmjs.com/package/@nuxtjs/toast
+  toast: {
+    position: 'bottom-center',
+    duration: 3000,
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
 }
