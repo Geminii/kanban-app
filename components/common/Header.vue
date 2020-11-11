@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-30 dark:bg-dark-elevatedSurface border-b border-light-border dark:border-dark-border h-16 lg:h-24"
+    class="fixed top-0 left-0 right-0 z-30 bg-white dark:bg-dark-elevatedSurface border-b border-light-border dark:border-dark-border h-16 lg:h-24"
   >
     <div
       class="flex relative mx-auto px-4 sm:px-8 justify-between items-center lg:py-6 h-full"

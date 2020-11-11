@@ -3,7 +3,7 @@
     class="fixed bottom-0 left-0 right-0 z-30 bg-light-elevatedSurface dark:bg-dark-elevatedSurface border-t border-light-border dark:border-dark-border px-4 sm:px-8 py-2"
   >
     <div class="flex justify-between items-center">
-      <p class="flex align-middle font-semibold text-kanban-lightgreen">
+      <p class="flex items-center font-semibold text-kanban-lightgreen">
         Made with <IconHeart class="ml-1 text-red-500 w-6" />
       </p>
 
