@@ -26,6 +26,7 @@
   - [Containerized application](#containerized-application)
     - [Using Dockerfile only](#using-dockerfile-only)
     - [Using Docker compose](#using-docker-compose)
+  - [License](#license)
 
 ## Getting started
 
@@ -86,3 +87,7 @@ docker-compose up -d --build
 # To enter inside the kanban container
 docker-compose exec kanban sh
 ```
+
+## License
+
+[MIT License](./LICENSE)
