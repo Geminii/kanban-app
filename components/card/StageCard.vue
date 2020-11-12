@@ -28,8 +28,8 @@
       <matter-card
         v-for="(matter, matterIndex) in matters"
         :key="matter.id"
-        :stage-index="stageIndex"
-        :matter-index="matterIndex"
+        :stage-index="parseInt(stageIndex)"
+        :matter-index="parseInt(matterIndex)"
         :data="matter"
         @disabledDraggable="disabledDraggableDone"
       />

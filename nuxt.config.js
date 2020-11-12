@@ -47,15 +47,27 @@ export default {
   modules: [
     // https://color-mode.nuxtjs.org/
     '@nuxtjs/color-mode',
+    // https://www.npmjs.com/package/@nuxtjs/toast
     '@nuxtjs/toast',
+    // https://github.com/rubystarashe/nuxt-vuex-localstorage-example
+    [
+      'nuxt-vuex-localstorage',
+      {
+        localStorage: ['kanban'],
+      },
+    ],
   ],
 
-  // https://www.npmjs.com/package/@nuxtjs/toast
   toast: {
     position: 'bottom-center',
     duration: 3000,
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    /*
+     ** You can extend webpack config here
+     */
+    transpile: ['nuxt-vuex-localstorage'],
+  },
 }

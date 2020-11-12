@@ -1,29 +1,39 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import defaultStages from '~/data/default-stages'
+import initialStages from '~/data/default-stages'
 import ConfigHandler from '~/data/default-config-handler'
 import { DisplayOptions } from '~/types/display-options'
 import { HttpStatusCode } from '~/types/http-status-code'
 
-export const state = () => ({
-  stages: defaultStages.stages,
-  displayOptions: {
-    displayColors: true,
-    displayReferences: true,
-  } as DisplayOptions,
-})
+export const initialState = () => {
+  return {
+    stages: Object.assign({}, initialStages().stages),
+    displayOptions: {
+      displayColors: true,
+      displayReferences: true,
+    } as DisplayOptions,
+  }
+}
+
+export const state = () => initialState()
 
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
-  countTotalCards: (state) =>
-    state.stages.map((s) => s.cards.length).reduce((r, n) => r + n),
+  countTotalCards: (state) => {
+    return Object.values(state.stages)
+      .map((s) => s.cards.length)
+      .reduce((r, n) => r + n)
+  },
   getLastOrderMatter: (state) => (parentStageIndex: number) =>
     state.stages[parentStageIndex].cards.map((c) => c.order).length,
   displayOptions: (state) => state.displayOptions,
 }
 
 export const mutations: MutationTree<RootState> = {
+  RESET_KANBAN: (state) => {
+    state.stages = Object.assign({}, initialStages().stages)
+  },
   CREATE_MATTER: (state, { stageIndex, matter }) => {
     state.stages[stageIndex].cards.push(matter)
   },
@@ -42,6 +52,9 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
+  resetKanban({ commit }, data) {
+    commit('RESET_KANBAN', data)
+  },
   createMatter({ commit, getters }, { stageIndex, matter }) {
     return new Promise((resolve, reject) => {
       // await back-end response to create matter

@@ -5,14 +5,14 @@ import vClickOutside from 'v-click-outside'
 import Verte from 'verte'
 import flushPromises from 'flush-promises'
 import MatterCard from '~/components/card/MatterCard.vue'
-import defaultStages from '~/data/default-stages'
+import initialStages from '~/data/default-stages'
 import ConfigHandler from '~/data/default-config-handler'
 import { Action } from '~/types/action'
 Vue.use(vClickOutside)
 Vue.use(Verte)
 
 const stageIndex = 0
-const matter = defaultStages.stages[stageIndex].cards[0]
+const matter = initialStages().stages[stageIndex].cards[0]
 const $toast = {
   success() {
     return 'Success'

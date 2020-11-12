@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import Draggable from 'vuedraggable'
 import StageCard from '~/components/card/StageCard.vue'
-import defaultStages from '~/data/default-stages'
+import initialStages from '~/data/default-stages'
 
 Vue.component('draggable', Draggable)
 
@@ -18,7 +18,7 @@ const store = new Vuex.Store({
   modules: {
     kanban: {
       namespaced: true,
-      state: defaultStages,
+      state: initialStages(),
       getters: {},
       mutations,
       actions,
@@ -33,7 +33,7 @@ const emptyStage = {
 
 const mattersStage = {
   title: 'Doing',
-  cards: defaultStages.stages[0].cards,
+  cards: initialStages().stages[0].cards,
 }
 const countMatters = mattersStage.cards.length
 
