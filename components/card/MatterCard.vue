@@ -40,7 +40,7 @@
         <button
           type="button"
           data-test="matter-cancel"
-          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 hover:text-orange-500 dark:hover:text-orange-500 hover:border-orange-500 focus:outline-none focus:border-text-orange-500"
+          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border bg-orange-100 hover:bg-orange-200 text-sm leading-5 font-medium rounded-md text-orange-500 hover:shadow-md focus:outline-none"
           @click="updateDone"
         >
           <icon-cancel class="h-5 w-5" />
@@ -49,7 +49,7 @@
         <button
           type="button"
           data-test="matter-add"
-          class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 hover:text-kanban-lightgreen dark:hover:text-kanban-lightgreen hover:border-kanban-lightgreen focus:outline-none focus:border-light-blue-300"
+          class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border text-kanban-lightgreen text-sm leading-5 font-medium rounded-md bg-green-100 hover:bg-green-200 hover:shadow-md focus:outline-none"
           @click="saveCard"
         >
           <icon-save class="h-5 w-5" />
