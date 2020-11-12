@@ -15,10 +15,10 @@ const stageIndex = 0
 const matter = defaultStages.stages[stageIndex].cards[0]
 const $toast = {
   success() {
-    return ''
+    return 'Success'
   },
   error() {
-    return ''
+    return 'Error'
   },
 }
 
@@ -56,6 +56,9 @@ describe('MatterCard', () => {
           },
           actions: {
             'kanban/updateMatter'() {
+              return Promise.resolve()
+            },
+            'kanban/deleteMatter'() {
               return Promise.resolve()
             },
           },
@@ -126,6 +129,59 @@ describe('MatterCard', () => {
 
       expect(wrapperMatter.emitted('disabledDraggable')).toHaveLength(1)
       expect(wrapperMatter.emitted('disabledDraggable')[0]).toEqual([true])
+    })
+
+    test('success when deleting an existing matter', async () => {
+      await editTitle(wrapperMatter)
+
+      wrapperMatter.find('[data-test=matter-delete]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      wrapperMatter.find('[data-test=matter-confirmation]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+      await flushPromises()
+
+      expect(wrapperMatter.vm.$toast.success()).toEqual('Success')
+    })
+
+    test('error when deleting an existing matter', async () => {
+      // Create new matter to reject promise on deleting matter
+      wrapperMatter = shallowMount(MatterCard, {
+        propsData: {
+          stageIndex,
+          data: matter,
+        },
+        mocks: {
+          $toast,
+        },
+        localVue,
+        store: new Vuex.Store({
+          getters: {
+            'kanban/displayOptions'() {
+              return {
+                displayColors: false,
+                displayReferences: false,
+              }
+            },
+          },
+          actions: {
+            'kanban/deleteMatter'() {
+              return Promise.reject(new Error())
+            },
+          },
+        }),
+      })
+
+      await editTitle(wrapperMatter)
+
+      wrapperMatter.find('[data-test=matter-delete]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      wrapperMatter.find('[data-test=matter-confirmation]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+      await flushPromises()
+
+      expect(wrapperMatter.vm.$toast.error()).toEqual('Error')
     })
   })
 

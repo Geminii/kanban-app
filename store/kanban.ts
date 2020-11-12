@@ -30,6 +30,9 @@ export const mutations: MutationTree<RootState> = {
   UPDATE_MATTER: (state, { stageIndex, matterIndex, matter }) => {
     state.stages[stageIndex].cards[matterIndex] = matter
   },
+  DELETE_MATTER: (state, { stageIndex, matterIndex }) => {
+    state.stages[stageIndex].cards.splice(matterIndex, 1)
+  },
   UPDATE_STAGE_MATTERS: (state, { stageIndex, matters }) => {
     state.stages[stageIndex].cards = matters
   },
@@ -74,6 +77,15 @@ export const actions: ActionTree<RootState, RootState> = {
         commit('UPDATE_MATTER', { stageIndex, matterIndex, matter })
         resolve()
       }
+    })
+  },
+  deleteMatter({ commit }, { stageIndex, matterIndex }) {
+    return new Promise((resolve) => {
+      // await back-end response to delete matter
+      console.info('[DELETE] BACK-END response to delete matter')
+
+      commit('DELETE_MATTER', { stageIndex, matterIndex })
+      resolve()
     })
   },
 }

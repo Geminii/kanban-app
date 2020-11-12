@@ -6,55 +6,87 @@
     :style="borderColor"
   >
     <div v-if="editing">
-      <div class="flex justify-between items-center">
-        <input
-          ref="title"
-          v-model="matter.title"
-          type="text"
-          data-test="matter-input-title"
-          :aria-activedescendant="isFocusTitle"
-          class="border rounded border-gray-300 py-2 px-3 w-full text-indigo-600 text-sm font-semibold font-sans tracking-wide hover:border-kanban-lightgreen focus:border-gray-500 focus:outline-none mr-4 leading-3"
-          :class="{
-            'focus:border-red-700': formError && matter.title === '',
-          }"
-          placeholder="Title of your matter"
-          @keyup.enter="saveCard"
-          @blur="isFocusTitle = false"
-        />
+      <div v-if="confirmDelete" class="flex justify-center items-center">
         <button
           type="button"
-          class="focus:outline-none"
-          data-test="matter-colorpicker"
-          @click="disabledDraggable"
-        >
-          <verte
-            v-model="matter.color"
-            menu-position="center"
-            picker="square"
-            model="hex"
-            @close="focusFieldIfEmptyTitle"
-          ></verte>
-        </button>
-      </div>
-      <div class="flex items-center">
-        <button
-          type="button"
-          data-test="matter-cancel"
-          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border bg-orange-100 hover:bg-orange-200 text-sm leading-5 font-medium rounded-md text-orange-500 hover:shadow-md focus:outline-none"
-          @click="updateDone"
+          data-test="matter-no-confirmation"
+          class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border bg-red-100 hover:bg-red-200 text-sm leading-5 font-medium rounded-md text-red-500 hover:shadow-md focus:outline-none"
+          @click="confirmDelete = false"
         >
           <icon-cancel class="h-5 w-5" />
-          <span>Cancel</span>
+          <span>No</span>
         </button>
         <button
           type="button"
-          data-test="matter-add"
-          class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border text-kanban-lightgreen text-sm leading-5 font-medium rounded-md bg-green-100 hover:bg-green-200 hover:shadow-md focus:outline-none"
-          @click="saveCard"
+          data-test="matter-confirmation"
+          class="inline-flex items-center ml-6 mt-2 pl-2 pr-4 py-2 border text-kanban-lightgreen text-sm leading-5 font-medium rounded-md bg-green-100 hover:bg-green-200 hover:shadow-md focus:outline-none"
+          @click="deleteCard"
         >
           <icon-save class="h-5 w-5" />
-          <span>Save</span>
+          <span>Yes</span>
         </button>
+      </div>
+      <div v-else>
+        <div class="flex justify-between items-center">
+          <input
+            ref="title"
+            v-model="matter.title"
+            type="text"
+            data-test="matter-input-title"
+            :aria-activedescendant="isFocusTitle"
+            class="border rounded border-gray-300 py-2 px-3 w-full text-indigo-600 text-sm font-semibold font-sans tracking-wide hover:border-kanban-lightgreen focus:border-gray-500 focus:outline-none mr-4 leading-3"
+            :class="{
+              'focus:border-red-700': formError && matter.title === '',
+            }"
+            placeholder="Title of your matter"
+            @keyup.enter="saveCard"
+            @blur="isFocusTitle = false"
+          />
+          <button
+            type="button"
+            class="focus:outline-none"
+            data-test="matter-colorpicker"
+            @click="disabledDraggable"
+          >
+            <verte
+              v-model="matter.color"
+              menu-position="center"
+              picker="square"
+              model="hex"
+              @close="focusFieldIfEmptyTitle"
+            ></verte>
+          </button>
+        </div>
+        <div class="flex items-center">
+          <button
+            v-if="action === 'UPDATE'"
+            type="button"
+            data-test="matter-delete"
+            class="inline-flex items-center mt-2 pl-2 pr-4 py-2 border bg-red-100 hover:bg-red-200 text-sm leading-5 font-medium rounded-md text-red-500 hover:shadow-md focus:outline-none"
+            @click="confirmDelete = true"
+          >
+            <icon-delete class="h-5 w-5" />
+            <span>Delete</span>
+          </button>
+          <button
+            type="button"
+            data-test="matter-cancel"
+            class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border bg-orange-100 hover:bg-orange-200 text-sm leading-5 font-medium rounded-md text-orange-500 hover:shadow-md focus:outline-none"
+            @click="updateDone"
+          >
+            <icon-cancel class="h-5 w-5" />
+            <span>Cancel</span>
+          </button>
+          <button
+            type="button"
+            data-test="matter-add"
+            class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border text-kanban-lightgreen text-sm leading-5 font-medium rounded-md bg-green-100 hover:bg-green-200 hover:shadow-md focus:outline-none"
+            @click="saveCard"
+          >
+            <icon-save class="h-5 w-5" />
+            <span>Save</span>
+          </button>
+        </div>
       </div>
     </div>
     <h2
@@ -80,6 +112,7 @@ import Vue, { PropOptions } from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 import { MatterCard } from '~/types/matter-card'
 import { Action } from '~/types/action'
+import IconDelete from '~/components/icons/Delete.vue'
 import IconCancel from '~/components/icons/Cancel.vue'
 import IconSave from '~/components/icons/Save.vue'
 import { generateHexColor } from '~/utils/generator'
@@ -87,6 +120,7 @@ import { generateHexColor } from '~/utils/generator'
 export default Vue.extend({
   name: 'MatterCard' as string,
   components: {
+    IconDelete,
     IconCancel,
     IconSave,
   },
@@ -125,6 +159,7 @@ export default Vue.extend({
       editing: false,
       isFocusTitle: false,
       formError: false,
+      confirmDelete: false,
       matter: {} as MatterCard,
     }
   },
@@ -157,6 +192,7 @@ export default Vue.extend({
     ...mapActions({
       createMatter: 'kanban/createMatter',
       updateMatter: 'kanban/updateMatter',
+      deleteMatter: 'kanban/deleteMatter',
       isDraggable: 'kanban/updateDraggable',
     }),
     async saveCard() {
@@ -188,6 +224,20 @@ export default Vue.extend({
       } else {
         this.formError = true
       }
+    },
+    async deleteCard() {
+      await this.deleteMatter({
+        stageIndex: this.stageIndex,
+        matterIndex: this.matterIndex,
+      })
+        .then(() => {
+          this.$toast.success('Matter deleted successfully')
+        })
+        .catch(() => {
+          this.$toast.error(
+            `An error occured when deleting ${this.matter.title}...`
+          )
+        })
     },
     editAndFocusTitleField(): void {
       this.editing = true
