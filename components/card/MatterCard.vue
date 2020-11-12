@@ -57,7 +57,7 @@
             ></verte>
           </button>
         </div>
-        <div class="flex items-center">
+        <div class="flex flex-wrap items-center">
           <button
             v-if="action === 'UPDATE'"
             type="button"
@@ -98,7 +98,7 @@
       {{ matter.title }}
     </h2>
     <span
-      v-show="displayOptions.displayReferences"
+      v-show="displayOptions.displayReferences && action === 'UPDATE'"
       data-test="matter-reference"
       class="absolute text-sm text-gray-600 top-0 right-6"
     >
