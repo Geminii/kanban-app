@@ -7,6 +7,9 @@ import { HttpStatusCode } from '~/types/http-status-code'
 
 export const initialState = () => {
   return {
+    reference: Object.values(initialStages().stages)
+      .map((s) => s.cards.length)
+      .reduce((r, n) => r + n),
     stages: Object.assign({}, initialStages().stages),
     displayOptions: {
       displayColors: true,
@@ -20,6 +23,7 @@ export const state = () => initialState()
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getReference: (state) => state.reference,
   countTotalCards: (state) => {
     return Object.values(state.stages)
       .map((s) => s.cards.length)
@@ -32,7 +36,12 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   RESET_KANBAN: (state) => {
-    state.stages = Object.assign({}, initialStages().stages)
+    state.stages = Object.assign({}, initialState().stages)
+    state.reference = initialState().reference
+    state.displayOptions = Object.assign({}, initialState().displayOptions)
+  },
+  INCREASE_REFERENCE: (state) => {
+    state.reference++
   },
   CREATE_MATTER: (state, { stageIndex, matter }) => {
     state.stages[stageIndex].cards.push(matter)
@@ -64,12 +73,13 @@ export const actions: ActionTree<RootState, RootState> = {
       if (matter.title === ConfigHandler.MATTER_TITLE_ERROR) {
         reject(HttpStatusCode.INTERNAL_SERVER_ERROR)
       } else {
+        commit('INCREASE_REFERENCE')
         commit('CREATE_MATTER', {
           stageIndex,
           matter: {
             id: uuidv4(),
             title: matter.title,
-            reference: getters.countTotalCards + 1,
+            reference: getters.getReference,
             order: getters.getLastOrderMatter(stageIndex),
             color: matter.color,
           },
