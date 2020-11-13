@@ -36,9 +36,7 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   RESET_KANBAN: (state) => {
-    state.stages = Object.assign({}, initialState().stages)
-    state.reference = initialState().reference
-    state.displayOptions = Object.assign({}, initialState().displayOptions)
+    Object.assign(state, initialState())
   },
   INCREASE_REFERENCE: (state) => {
     state.reference++
@@ -47,7 +45,7 @@ export const mutations: MutationTree<RootState> = {
     state.stages[stageIndex].cards.push(matter)
   },
   UPDATE_MATTER: (state, { stageIndex, matterIndex, matter }) => {
-    state.stages[stageIndex].cards[matterIndex] = matter
+    state.stages[stageIndex].cards.splice(matterIndex, 1, matter)
   },
   DELETE_MATTER: (state, { stageIndex, matterIndex }) => {
     state.stages[stageIndex].cards.splice(matterIndex, 1)

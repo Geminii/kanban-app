@@ -46,14 +46,14 @@
             type="button"
             class="focus:outline-none"
             data-test="matter-colorpicker"
-            @click="disabledDraggable"
+            @click="disabledDraggable(true)"
           >
             <verte
               v-model="matter.color"
               menu-position="center"
               picker="square"
               model="hex"
-              @close="focusFieldIfEmptyTitle"
+              @close="disabledDraggable(false)"
             ></verte>
           </button>
         </div>
@@ -179,6 +179,11 @@ export default Vue.extend({
       return this.action === Action.NEW
     },
   },
+  watch: {
+    data() {
+      this.matter = Object.assign({}, this.data)
+    },
+  },
   mounted(): void {
     this.editing = this.isNewItem || this.newMatter
     this.matter = Object.assign({}, this.data)
@@ -254,15 +259,8 @@ export default Vue.extend({
       title.focus()
       this.isFocusTitle = true
     },
-    focusFieldIfEmptyTitle(): void {
-      this.$emit('disabledDraggable', false)
-
-      if (this.matter.title === '') {
-        this.focusTitleField()
-      }
-    },
-    disabledDraggable() {
-      this.$emit('disabledDraggable', true)
+    disabledDraggable(disabled: boolean) {
+      this.$emit('disabledDraggable', disabled)
     },
   },
 })

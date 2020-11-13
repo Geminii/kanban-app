@@ -104,23 +104,6 @@ describe('MatterCard', () => {
       expect(wrapperMatter.emitted('updateDone')[0]).toEqual([false])
     })
 
-    test('edit a card with title then color must not focus title field', async () => {
-      await editTitle(wrapperMatter)
-
-      wrapperMatter.find('[data-test=matter-input-title]').trigger('blur')
-      await wrapperMatter.vm.$nextTick()
-
-      // Simulate an outside click out of the color box
-      wrapperMatter.vm.focusFieldIfEmptyTitle()
-      await wrapperMatter.vm.$nextTick()
-
-      expect(
-        wrapperMatter
-          .find('[data-test=matter-input-title]')
-          .attributes('aria-activedescendant')
-      ).toBeFalsy()
-    })
-
     test('disabled draggable behavior if color picker opened', async () => {
       await editTitle(wrapperMatter)
 
@@ -183,6 +166,24 @@ describe('MatterCard', () => {
 
       expect(wrapperMatter.vm.$toast.error()).toEqual('Error')
     })
+
+    test('watch update matter data when reset', async () => {
+      const newMatterTitle = 'A new matter'
+      wrapperMatter.setProps({
+        data: {
+          id: 'acb6e0d4-1e38-4332-94ea-78955f850a3b',
+          title: newMatterTitle,
+          reference: 1,
+          order: 0,
+          color: '#2c7be5',
+        },
+      })
+      await wrapperMatter.vm.$nextTick()
+
+      expect(wrapperMatter.find('[data-test=matter-title]').text()).toMatch(
+        newMatterTitle
+      )
+    })
   })
 
   describe('New matter', () => {
@@ -237,16 +238,6 @@ describe('MatterCard', () => {
       ).toBeTruthy()
     })
 
-    test('create a card must focus field title if color has been chosen before to write a title', () => {
-      /// Simulate an outside click out of the color box
-      wrapperNewMatter.vm.focusFieldIfEmptyTitle()
-
-      expect(
-        wrapperNewMatter
-          .find('[data-test=matter-input-title]')
-          .attributes('aria-activedescendant')
-      ).toBeTruthy()
-    })
     test('invalid form must have a border color', async () => {
       wrapperNewMatter.find('[data-test=matter-add]').trigger('click')
       await wrapperNewMatter.vm.$nextTick()
