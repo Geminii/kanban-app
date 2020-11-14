@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "fileServerFolder": "test/e2e",
+  "componentFolder": "test/e2e/component",
+  "fixturesFolder": "test/e2e/fixtures",
+  "integrationFolder": "test/e2e/integration",
+  "screenshotsFolder": "test/e2e/screenshots",
+  "videosFolder": "test/e2e/videos",
+  "pluginsFile": "test/e2e/plugins",
+  "supportFile": "test/e2e/support"
+}

@@ -8,6 +8,7 @@
         {{ stage.title }}
       </h2>
       <span
+        data-test="stage-counter"
         class="rounded-full h-6 w-6 flex items-center justify-center text-xs font-medium leading-4 bg-blue-200 text-teal-800"
       >
         {{ matters.length }}
@@ -20,7 +21,7 @@
       :animation="150"
       ghost-class="ghost-card"
       group="cards"
-      :class="!isNewMatter ? 'min-h-75 mb-4' : ''"
+      :class="!isNewMatter ? `stage-draggable-${stageIndex} min-h-75 mb-4` : ''"
       data-test="stage-draggable"
       :disabled="disabledDraggable"
     >

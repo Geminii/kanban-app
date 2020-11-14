@@ -3,6 +3,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    mocha: true,
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
@@ -12,5 +13,10 @@ module.exports = {
     'plugin:nuxt/recommended',
   ],
   plugins: ['prettier'],
+  globals: {
+    Vue: true,
+    Cypress: true,
+    cy: true,
+  },
   rules: {},
 }

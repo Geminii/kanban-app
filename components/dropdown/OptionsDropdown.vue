@@ -31,6 +31,7 @@
         aria-labelledby="options-menu"
       >
         <div
+          data-test="options-dropdown-list"
           aria-options="options-dropdown-list"
           class="flex flex-col px-4 py-2"
         >

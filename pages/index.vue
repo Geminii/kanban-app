@@ -6,6 +6,7 @@
       <div class="mb-4 sm:mb-0">
         <p class="font-extrabold text-xl text-purple-700">Matters Pipeline</p>
         <button
+          data-test="reset-kanban"
           class="inline text-white rounded-full bg-indigo-500 uppercase px-2 text-xs font-bold focus:outline-none"
           @click="resetKanban"
         >
