@@ -22,6 +22,7 @@
   - [Linting](#linting)
   - [Testing](#testing)
     - [Unit testing](#unit-testing)
+    - [End To End Integration](#end-to-end-integration)
   - [Build Setup](#build-setup)
   - [Containerized application](#containerized-application)
     - [Using Dockerfile only](#using-dockerfile-only)
@@ -54,7 +55,11 @@ mistakes without actually running the script or opening the web page.
 
 ### Unit testing
 
-Please see [test guide](test/README.md).
+Please see [unit test guide](test/unit/README.md).
+
+### End To End Integration
+
+Please see [e2e test guide](test/e2e/README.md).
 
 ## Build Setup
 
