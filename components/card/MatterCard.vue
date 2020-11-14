@@ -72,7 +72,7 @@
             type="button"
             data-test="matter-cancel"
             class="inline-flex items-center ml-2 mt-2 pl-2 pr-4 py-2 border bg-orange-100 hover:bg-orange-200 text-sm leading-5 font-medium rounded-md text-orange-500 hover:shadow-md focus:outline-none"
-            @click="updateDone"
+            @click="cancelCard"
           >
             <icon-cancel class="h-5 w-5" />
             <span>Cancel</span>
@@ -249,6 +249,10 @@ export default Vue.extend({
       this.$nextTick(() => {
         this.focusTitleField()
       })
+    },
+    cancelCard(): void {
+      this.matter = Object.assign({}, this.data)
+      this.updateDone()
     },
     updateDone(): void {
       this.editing = false

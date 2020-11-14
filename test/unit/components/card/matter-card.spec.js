@@ -184,6 +184,20 @@ describe('MatterCard', () => {
         newMatterTitle
       )
     })
+
+    test('cancel an editing matter emit updateDone event', async () => {
+      await editTitle(wrapperMatter)
+      wrapperMatter.vm.matter.title = 'An edited matter'
+
+      wrapperMatter.find('[data-test=matter-cancel]').trigger('click')
+      await wrapperMatter.vm.$nextTick()
+
+      expect(wrapperMatter.emitted('updateDone')).toHaveLength(1)
+      expect(wrapperMatter.emitted('updateDone')[0]).toEqual([false])
+      expect(wrapperMatter.find('[data-test=matter-title]').text()).toMatch(
+        'My first matter'
+      )
+    })
   })
 
   describe('New matter', () => {
