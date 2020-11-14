@@ -9,7 +9,9 @@
     "generate": "nuxt-ts generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "yarn lint --fix",
-    "test:unit": "jest --verbose --no-cache"
+    "test:unit": "jest --verbose --no-cache",
+    "cy:open": "cypress open --config-file test/e2e/cypress.json",
+    "cy:run": "cypress run --spec 'test/e2e/integration/app/*.spec.js --config-file test/e2e/cypress.json'"
   },
   "husky": {
     "hooks": {
