@@ -54,7 +54,7 @@
     "eslint-plugin-nuxt": "1.0.0",
     "eslint-plugin-prettier": "3.1.4",
     "flush-promises": "1.0.2",
-    "husky": "4.3.0",
+    "husky": "4.3.6",
     "jest": "26.6.3",
     "prettier": "2.1.2",
     "tailwindcss-dark-mode": "1.1.7",
