@@ -27,7 +27,7 @@
     "core-js": "3.6.5",
     "nuxt": "2.14.7",
     "nuxt-vuex-localstorage": "1.2.7",
-    "uuid": "8.3.1",
+    "uuid": "8.3.2",
     "v-click-outside": "3.1.2",
     "verte": "0.0.12",
     "vuedraggable": "2.24.3"
