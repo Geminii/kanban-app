@@ -1667,12 +1667,12 @@
     webpack-node-externals "^2.5.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/color-mode@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/color-mode/-/color-mode-2.0.0.tgz#6efcc443353ad4136d2c5d04d011ad3839349a0f"
-  integrity sha512-h3LFcfeKgNb8lzLu8vP/umbFxL+aFopzEiF9wHxyFAKCokdbnJyK7wY3+xqaX9eRUnlkxHbIcOO0dnyVZQkqPQ==
+"@nuxtjs/color-mode@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/color-mode/-/color-mode-2.0.2.tgz#98292e44b9774262c66aad1782b1430593441492"
+  integrity sha512-j5xsy3R6rWNRon8Rvzut7J4QyGWWsAYfdMS80vp+1u9I+9k/lOeFzwzQW4Sxsan+nhQmsKi9XaWS7o0Vk1g1JA==
   dependencies:
-    defu "^2.0.4"
+    defu "^3.2.2"
     lodash.template "^4.5.0"
 
 "@nuxtjs/eslint-config-typescript@3.0.0":
@@ -4626,6 +4626,11 @@ defu@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/defu/-/defu-3.1.0.tgz#a6b5104cacc06aa1efa01923becddbedd32505e8"
   integrity sha512-pc7vS4wbYFtsRL+OaLHKD72VcpOz9eYgzZeoLz9pCs+R8htyPdZnD1CxKP9ttZuT90CLPYFTSaTyc3/7v4gG9A==
+
+defu@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-3.2.2.tgz#be20f4cc49b9805d54ee6b610658d53894942e97"
+  integrity sha512-8UWj5lNv7HD+kB0e9w77Z7TdQlbUYDVWqITLHNqFIn6khrNHv5WQo38Dcm1f6HeNyZf0U7UbPf6WeZDSdCzGDQ==
 
 delayed-stream@~1.0.0:
   version "1.0.0"
