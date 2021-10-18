@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@4tw/cypress-drag-drop@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@4tw/cypress-drag-drop/-/cypress-drag-drop-1.5.0.tgz#13ddc127612cc5d730ec9b1146d3b2fdb9b1170c"
-  integrity sha512-T5pBkOK92zCqfhzfN2QhoOGdWUjFh2giddYj3A/PX5ysCJYk6bgONW0fhQUjhC8K8grxWkiNDNoUAkl5TRbrag==
+"@4tw/cypress-drag-drop@1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@4tw/cypress-drag-drop/-/cypress-drag-drop-1.8.1.tgz#0758a09387a8c5d9ea54b049904e285836d2f8c8"
+  integrity sha512-w8DSGYhe8JK+dAH8wp0+FJaQ8XXIhKasbnGJTHWARyYAkEco+Zri6AJveAjrhBnmvzxbGzALzovcvKUN5zLJuQ==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.8.3":
   version "7.10.4"
